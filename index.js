@@ -1,20 +1,12 @@
 
-var fs = require('fs')
-	, path = require('path')
-	, jobDir = path.join(__dirname, './jobs');
-
-function getJobs(cb){
+function getJobs(){
 	var jobs = {};
 
-	fs.readdir(jobDir, function(err, files){
-			if(err) cb(err);
-
-			files.forEach(function(file){			
-				jobs[file] = require(path.join(jobDir, file));
-			})
-			
-			cb(null, jobs);
-	})
+	var module = require('cpp-processor');
+	
+	jobs[module.name] = module;
+	
+	return jobs;
 }
 
 function registerJobs(jobs, eagerSpawn){
@@ -45,10 +37,7 @@ function registerJobs(jobs, eagerSpawn){
 
 var eagerSpawn = true;
 
-getJobs(function(err, jobs){
-	if(err) console.log(err);
-	
-	var registry = registerJobs(jobs);
+var registry = registerJobs(getJobs());
 	
 	Object.keys(registry)
 		.forEach(function(registrationName){				
@@ -57,5 +46,3 @@ getJobs(function(err, jobs){
 			if(eagerSpawn === true || eagerSpawn == '*' || eagerSpawn.indexOf('*') > -1 || eagerSpawn.indexOf(registration.name) > -1)
 				registration.spawn();
 		})
-		
-})

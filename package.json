@@ -1,11 +1,21 @@
 {
   "name": "scurry.js",
   "version": "0.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Joshua Chan <joshua.bennett.chan@gmail.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://futurechan@github.com/CompassPHS/scurry.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CompassPHS/scurry.js/issues"
+  },
+  "homepage": "https://github.com/CompassPHS/scurry.js",
+  "dependencies": {
+    "cpp-processor": "git+ssh://git@github.com:compassphs/cpp-processor"
+  }
 }
