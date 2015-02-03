@@ -14,6 +14,7 @@ function registerJobs(jobConfigs){
                 spawn: function(){
                     console.log('spawning child: ' + this.name);
                     var child = this.job.spawn();
+                    child.started = new Date();
                     this.children.push(child);
 
                     //bind child to handlers

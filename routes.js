@@ -1,4 +1,6 @@
 var jobManager = require('./jobManager')
+    _ = require('lodash')
+;
 
 var routes = [];
 
@@ -6,11 +8,13 @@ routes.push({
     path:'/{job}',
     method:'GET',
     handler:function(request,reply) {
-        jobManager.registry[request.params.job]
-            .routes
-            .find(request.query, function (err, result) {
-                reply(err)
-            })
+        var job = jobManager.registry[request.params.job];
+
+        reply({
+            id:request.params.job,
+            name:job.name,
+            children:job.children.map(function(child){return child.pid;})
+        })
     }
 })
 
@@ -18,14 +22,18 @@ routes.push({
     path:'/{job}/{id}',
     method:'get',
     handler:function(request,reply){
-        jobManager.registry[request.params.job]
-            .routes
-            .get(request.params.id, function(err, result){
-                reply(err)
-            })
+        var job = jobManager.registry[request.params.job];
+
+        var child = _.find(job.children, {'pid':parseInt(request.params.id)});
+
+        reply({
+            id:child.pid,
+            started:child.started
+        })
     }
 })
 
+/*
 routes.push({
     path:'/{job}',
     method:'post',
@@ -37,6 +45,7 @@ routes.push({
             })
     }
 })
+*/
 
 
 module.exports = routes;
