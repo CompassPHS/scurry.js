@@ -34,10 +34,10 @@ server.connection({
 server.ext('onRequest', function (request, reply) {
     if(!settings.serverPath) return reply.continue();
 
-    console.log(request.path);
+    console.log(request.url.path);
     var regex = new RegExp('(' + settings.serverPath + ')(/.+)', "i");
-    request.setUrl(request.path.replace(regex, "$2"));
-    console.log(request.path);
+    request.setUrl(request.url.path.replace(regex, "$2"));
+    console.log(request.url.path);
     return reply.continue();
 });
 
