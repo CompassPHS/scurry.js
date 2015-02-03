@@ -1,48 +1,75 @@
+var Hapi = require('hapi')
+    , jobManager = require('./jobManager')
+    , settings = require('./config/configuration').load()
+    ;
 
-function getJobs(){
-	var jobs = {};
+var options = {
+    connections:{
+        //	cors:true,
+        router:{
+            isCaseSensitive:false,
+            stripTrailingSlash:true
+        }
+    },
+    app:{
 
-	var module = require('cpp-processor');
-	
-	jobs[module.name] = module;
-	
-	return jobs;
-}
+    }
+};
 
-function registerJobs(jobs, eagerSpawn){
-	console.log('registering jobs');
-	
-	var registry = {};
-	
-	Object.keys(jobs)
-		.forEach(function(jobName){
-			
-			registry[jobName] = {
-				name:jobName,
-				job: jobs[jobName],
-				children: [],
-				spawn: function(){
-					console.log('spawning child: ' + this.name);
-					var child = this.job.spawn();
-					this.children.push(child);
-					
-					//bind child to handlers
-				}
-			};
-			
-		});		
-		
-	return registry;
-}
+var server = new Hapi.Server(options);
 
-var eagerSpawn = true;
+server.connection({
+    port: process.env.PORT || settings.PORT,
+    routes: {
+        validate: {
+            options: {
+                allowUnknown:true,
+                stripUnknown:true,
+                abortEarly: false
+            }
+        }
+    }
+});
 
-var registry = registerJobs(getJobs());
-	
-	Object.keys(registry)
-		.forEach(function(registrationName){				
-			var registration = registry[registrationName];
-			console.log('checking eager spawn for ' + registration.name);
-			if(eagerSpawn === true || eagerSpawn == '*' || eagerSpawn.indexOf('*') > -1 || eagerSpawn.indexOf(registration.name) > -1)
-				registration.spawn();
-		})
+server.ext('onRequest', function (request, reply) {
+    if(!settings.serverPath) return reply.continue();
+
+    console.log(request.path);
+    var regex = new RegExp('(' + settings.serverPath + ')(/.+)', "i");
+    request.setUrl(request.path.replace(regex, "$2"));
+    console.log(request.path);
+    return reply.continue();
+});
+
+jobManager.load(settings.jobs, { eagerSpawn: settings.eagerSpawn});
+
+server.route(require('./routes'));
+
+server.register({
+    register: require('good'),
+    options: {
+        opsInterval: 1000,
+        reporters: [{
+            reporter: require('good-console'),
+            args:[{ log: '*', response: '*', error: '*', ops: '*'}]
+        }]
+    }
+}, function (err) {
+
+    if (err) {
+        console.error(err);
+    }
+    else {
+        server.start(function () {
+            console.info('Server started at ' + server.info.uri);
+        });
+    }
+});
+
+
+
+
+
+
+
+
