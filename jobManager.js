@@ -39,6 +39,7 @@ var load = function(jobConfigs, opts){
             console.log('checking eager spawn for ' + registration.name);
             if(eagerSpawn === true || eagerSpawn == '*' || eagerSpawn.indexOf('*') > -1 || eagerSpawn.indexOf(registration.name) > -1)
                 registration.spawn();
+
         })
 }
 

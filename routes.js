@@ -33,6 +33,37 @@ routes.push({
     }
 })
 
+
+
+Object.keys(jobManager.registry)
+    .forEach(function(registrationName){
+        var registration = jobManager.registry[registrationName];
+
+        if(registration.job.routes){
+            registration.job.routes.forEach(function(route){
+
+                routes.push({
+                    path:'/' + registrationName + route.path,
+                    method:route.method,
+                    handler:function(request, reply){
+                        var req = {
+                            params:request.params,
+                            body:request.payload,
+                            query:request.query
+                        }
+
+                        route.handler(req, function(err, result){
+                            if(err)
+                                return reply(err).code(500);
+
+                            reply(result);
+                        })
+                    }
+                })
+
+            })
+        }
+    })
 /*
 routes.push({
     path:'/{job}',
