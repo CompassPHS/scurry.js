@@ -16,4 +16,4 @@ var settingsFile = path.join(__dirname, 'settings.json');
 nconf.file(settingsFile)
     .env(['PORT']);
 
-module.exports = nconf;
+module.exports = nconf.load();

@@ -16,7 +16,6 @@
   },
   "homepage": "https://github.com/CompassPHS/scurry.js",
   "dependencies": {
-    "cpp-processor": "git+ssh://git@github.com:compassphs/cpp-processor",
     "good": "^5.1.1",
     "good-console": "^4.1.0",
     "hapi": "^8.1.0",

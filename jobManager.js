@@ -1,36 +1,46 @@
-var registry = {};
+var fs = require('fs')
+    , path = require('path')
+    //, settings = re
+    , settings = require('./config/configuration')
+    , jobsFolder = path.join(__dirname, 'jobs')
+    , registry = {}
+;
 
-function registerJobs(jobConfigs){
+function registerJobs(){
     console.log('registering jobs');
 
-    Object.keys(jobConfigs)
-        .forEach(function(key){
-            var module = require(key);
+    var jobs = fs.readdirSync(jobsFolder);
 
-            registry[key] = {
-                name:module.name,
-                job: module,
-                children: [],
-                spawn: function(){
-                    console.log('spawning child: ' + this.name);
-                    var child = this.job.spawn();
-                    child.started = new Date();
-                    this.children.push(child);
+    jobs.forEach(function(key){
+        var jobConfig = settings.jobs[key];
+        if(!jobConfig) return;
 
-                    //bind child to handlers
-                },
-                routes:module.routes
-            };
+        var module = require(path.join(jobsFolder,key));
 
-        })
+        registry[key] = {
+            name:module.name,
+            job: module,
+            children: [],
+            spawn: function(){
+                console.log('spawning child: ' + this.name);
+                var child = this.job.spawn();
+                child.started = new Date();
+                this.children.push(child);
+
+                //bind child to handlers
+            },
+            routes:module.routes
+        };
+
+    })
 
     return registry;
 }
 
-var load = function(jobConfigs, opts){
-    var eagerSpawn = opts.eagerSpawn;
+var load = function(){
+    var eagerSpawn = settings.eagerSpawn;
 
-    registerJobs(jobConfigs);
+    registerJobs();
 
     Object.keys(registry)
         .forEach(function(registrationName){

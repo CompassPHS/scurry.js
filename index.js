@@ -1,6 +1,6 @@
 var Hapi = require('hapi')
     , jobManager = require('./jobManager')
-    , settings = require('./config/configuration').load()
+    , settings = require('./config/configuration')
     ;
 
 var options = {
@@ -41,7 +41,7 @@ server.ext('onRequest', function (request, reply) {
     return reply.continue();
 });
 
-jobManager.load(settings.jobs, { eagerSpawn: settings.eagerSpawn});
+jobManager.load();
 
 server.route(require('./routes'));
 
