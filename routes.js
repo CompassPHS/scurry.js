@@ -52,9 +52,9 @@ Object.keys(jobManager.registry)
                             query:request.query
                         }
 
-                        route.handler(req, function(err, result){
+                        route.handler(req, function(err, result, status){
                             if(err)
-                                return reply(err).code(500);
+                                return reply(err).code(status || 500);
 
                             reply(result);
                         })
