@@ -56,7 +56,7 @@ Object.keys(jobManager.registry)
                             if(err)
                                 return reply(err).code(status || 500);
 
-                            reply(result);
+                            reply(result).code(status || 200);
                         })
                     }
                 })
