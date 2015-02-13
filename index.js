@@ -1,75 +1,23 @@
-var Hapi = require('hapi')
+var jayson = require('jayson')
     , jobManager = require('./jobManager')
+    , _ = require('lodash')
     , settings = require('./config/configuration')
+    , PORT = process.env.PORT || settings.PORT
     ;
 
-var options = {
-    connections:{
-        //	cors:true,
-        router:{
-            isCaseSensitive:false,
-            stripTrailingSlash:true
-        }
-    },
-    app:{
-
-    }
-};
-
-var server = new Hapi.Server(options);
-
-server.connection({
-    port: process.env.PORT || settings.PORT,
-    routes: {
-        validate: {
-            options: {
-                allowUnknown:true,
-                stripUnknown:true,
-                abortEarly: false
-            }
-        }
-    }
-});
-
-server.ext('onRequest', function (request, reply) {
-    if(!settings.serverPath) return reply.continue();
-
-    console.log(request.url.path);
-    var regex = new RegExp('(' + settings.serverPath + ')(/.+)', "i");
-    request.setUrl(request.url.path.replace(regex, "$2"));
-    console.log(request.url.path);
-    return reply.continue();
-});
-
+// Start jobs workers
 jobManager.load();
 
-server.route(require('./routes'));
+// Start jobs RPC
+var methods = _.reduce(jobManager.registry, function(seed, job) {
+        _.each(job.methods, function(func, methodName) {
+            seed[job.name + '.' + methodName] = func;
+        })
+        return seed;
+    }, {});
 
-server.register({
-    register: require('good'),
-    options: {
-        opsInterval: 1000,
-        reporters: [{
-            reporter: require('good-console'),
-            args:[{ log: '*', response: '*', error: '*', ops: '*'}]
-        }]
-    }
-}, function (err) {
+var server = jayson.server(methods);
 
-    if (err) {
-        console.error(err);
-    }
-    else {
-        server.start(function () {
-            console.info('Server started at ' + server.info.uri);
-        });
-    }
+server.http().listen(PORT, function() {
+    console.log('Service listening on port ' + PORT);
 });
-
-
-
-
-
-
-
-
