@@ -1,6 +1,5 @@
 var fs = require('fs')
     , path = require('path')
-    //, settings = re
     , settings = require('./config/configuration')
     , jobsFolder = path.join(__dirname, 'jobs')
     , registry = {}
@@ -29,7 +28,8 @@ function registerJobs(){
 
                 //bind child to handlers
             },
-            routes:module.routes
+            routes:module.routes,
+            methods:module.methods
         };
 
     })
