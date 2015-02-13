@@ -9,14 +9,12 @@ var jayson = require('jayson')
 jobManager.load();
 
 // Start jobs RPC
-var methods = _.chain(jobManager.registry)
-    .reduce(function(seed, job) {
-        _.each(job.methods, function(func, name) {
-            seed[job.name + '.' + name] = func;
+var methods = _.reduce(jobManager.registry, function(seed, job) {
+        _.each(job.methods, function(func, methodName) {
+            seed[job.name + '.' + methodName] = func;
         })
         return seed;
-    }, {})
-    .value();
+    }, {});
 
 var server = jayson.server(methods);
 
