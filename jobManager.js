@@ -28,7 +28,6 @@ function registerJobs(){
 
                 //bind child to handlers
             },
-            routes:module.routes,
             methods:module.methods
         };
 
