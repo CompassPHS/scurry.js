@@ -11,8 +11,9 @@ function registerJobs(){
     var jobs = fs.readdirSync(jobsFolder);
 
     jobs.forEach(function(key){
-        var jobConfig = settings.jobs[key];
-        if(!jobConfig) return;
+
+        var stats = fs.statSync(path.join(jobsFolder, key));
+        if(!stats.isDirectory()) return;
 
         var module = require(path.join(jobsFolder,key));
 
