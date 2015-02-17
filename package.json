@@ -21,5 +21,10 @@
     "nconf": "^0.7.1",
     "needle": "^0.7.11",
     "rabbit.js": "^0.4.2"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-install": "^0.2.0",
+    "yargs": "^3.0.4"
   }
 }
