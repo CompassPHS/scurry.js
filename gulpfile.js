@@ -20,5 +20,4 @@ gulp.task('jobs', function() {
             require(path.join(jobsFolder, job, 'gulpfile'));
         })
         .value();
-    gulp.start('build-job');
 })
