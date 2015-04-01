@@ -3,7 +3,8 @@ var jayson = require('jayson')
     , _ = require('lodash')
     , settings = require('./config/configuration')
     , PORT = process.env.PORT || settings.PORT
-    ;
+    , logger = require('./logger')
+;
 
 // Start jobs workers
 jobManager.load();
@@ -19,5 +20,5 @@ var methods = _.reduce(jobManager.registry, function(seed, job) {
 var server = jayson.server(methods);
 
 server.http().listen(PORT, function() {
-    console.log('Service listening on port ' + PORT);
+    logger.info('Service listening on port ' + PORT);
 });
