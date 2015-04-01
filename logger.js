@@ -1,7 +1,7 @@
 var bunyan = require('bunyan')
   , path = require('path')
   , mkdirp = require('mkdirp')
-  , settings = require('./config/configuration')
+  , settings = require('./config')
   , logOpts = settings.logger
   , PrettyStream = require('bunyan-prettystream')
   , prettyStdOut = new PrettyStream()

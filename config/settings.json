@@ -10,7 +10,7 @@
   "PORT":8100,
   "eagerSpawn":true,
   "logger":{
-    "name":"scurry-js",
+    "name":"shuttle-js",
     "file":{
       "level": "debug",
       "type": "rotating-file",
