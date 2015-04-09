@@ -1,6 +1,21 @@
 {
   "PORT":8100,
   "eagerSpawn":true,
+  "logger":{
+    "name":"scurry-js",
+    "file":{
+      "level": "debug",
+      "type": "rotating-file",
+      "path": "c:/var/log/scurry-js/log.txt",
+      "period": "1d",
+      "count": 10
+    },
+    "logstashTcp":{
+      "host": "10.24.1.140",
+      "port": 5505,
+      "max_connect_retries":-1
+    }
+  },
   "jobs":{
     "cpp-processor":{}
   }
