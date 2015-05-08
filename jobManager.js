@@ -1,6 +1,7 @@
 var fs = require('fs')
+    , logger = require('./logger')
     , path = require('path')
-    , settings = require('./config/configuration')
+    , settings = require('./config')
     , jobsFolder = path.join(__dirname, 'jobs')
     , registry = {}
     , logger = require('./logger')

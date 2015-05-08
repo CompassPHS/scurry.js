@@ -1,4 +1,3 @@
-
 var bunyan = require('bunyan')
   , path = require('path')
   , mkdirp = require('mkdirp')
@@ -39,4 +38,4 @@ if(process.env.NODE_ENV !== 'test'){
   }
 }
 
-module.exports=bunyan.createLogger(opts);
+module.exports = bunyan.createLogger(opts);

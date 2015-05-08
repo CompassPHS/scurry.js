@@ -1,4 +1,12 @@
 {
+  "logger": {
+    "name": "shuttle.js",
+    "logstashTcp":{
+      "host": "10.24.1.140",
+      "port": 5505,
+      "max_connect_retries":-1
+    }
+  },
   "PORT":8100,
   "eagerSpawn":true,
   "logger":{
@@ -15,8 +23,5 @@
       "port": 5505,
       "max_connect_retries":-1
     }
-  },
-  "jobs":{
-    "cpp-processor":{}
   }
 }
