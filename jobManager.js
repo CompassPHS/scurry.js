@@ -1,12 +1,13 @@
 var fs = require('fs')
+    , logger = require('./logger')
     , path = require('path')
-    , settings = require('./config/configuration')
+    , settings = require('./config')
     , jobsFolder = path.join(__dirname, 'jobs')
     , registry = {}
 ;
 
 function registerJobs(){
-    console.log('registering jobs');
+    logger.debug('registering jobs');
 
     var jobs = fs.readdirSync(jobsFolder);
 
@@ -46,7 +47,7 @@ var load = function(){
         .forEach(function(registrationName){
             var registration = registry[registrationName];
 
-            console.log('checking eager spawn for ' + registration.name);
+            logger.debug('checking eager spawn for ' + registration.name);
             if(eagerSpawn === true || eagerSpawn == '*' || eagerSpawn.indexOf('*') > -1 || eagerSpawn.indexOf(registration.name) > -1)
                 registration.spawn();
 
