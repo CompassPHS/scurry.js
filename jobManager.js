@@ -3,6 +3,7 @@ var fs = require('fs')
     , path = require('path')
     , settings = require('./config')
     , jobsFolder = path.join(__dirname, 'jobs')
+    , _ = require('lodash')
     , registry = {}
     , logger = require('./logger')
 ;
@@ -30,6 +31,9 @@ function registerJobs(){
                 this.children.push(child);
 
                 //bind child to handlers
+                process.on('exit', function() {
+                    child.kill();
+                });
             },
             methods:module.methods
         };
