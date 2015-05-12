@@ -3,6 +3,7 @@ var fs = require('fs')
     , path = require('path')
     , settings = require('./config')
     , jobsFolder = path.join(__dirname, 'jobs')
+    , _ = require('lodash')
     , registry = {}
 ;
 
@@ -23,12 +24,15 @@ function registerJobs(){
             job: module,
             children: [],
             spawn: function(){
-                console.log('spawning child: ' + this.name);
+                logger.debug('spawning child: ' + this.name);
                 var child = this.job.spawn();
                 child.started = new Date();
                 this.children.push(child);
 
                 //bind child to handlers
+                process.on('exit', function() {
+                    child.kill();
+                });
             },
             methods:module.methods
         };

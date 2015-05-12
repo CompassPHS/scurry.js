@@ -28,5 +28,5 @@ server.on('response', function(req, res) {
 });
 
 server.http().listen(PORT, function() {
-    console.log('Service listening on port ' + PORT);
+    logger.debug('Service listening on port ' + PORT + ' from pid ' + process.pid);
 });
