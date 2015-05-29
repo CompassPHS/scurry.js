@@ -1,12 +1,4 @@
 {
-  "logger": {
-    "name": "shuttle.js",
-    "logstashTcp":{
-      "host": "10.24.1.140",
-      "port": 5505,
-      "max_connect_retries":-1
-    }
-  },
   "PORT":8100,
   "eagerSpawn":true,
   "logger":{
@@ -14,7 +6,7 @@
     "file":{
       "level": "debug",
       "type": "rotating-file",
-      "path": "c:/var/log/scurry-js/log.txt",
+      "path": "c:/var/log/shuttle-js/log.txt",
       "period": "1d",
       "count": 10
     },
