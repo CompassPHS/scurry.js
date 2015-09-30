@@ -4,8 +4,7 @@ var bunyan = require('bunyan')
   , settings = require('./config')
   , logOpts = settings.logger
   , PrettyStream = require('bunyan-prettystream')
-  , prettyStdOut = new PrettyStream()
-;
+  , prettyStdOut = new PrettyStream();
 
 var opts = {
   name: logOpts.name,

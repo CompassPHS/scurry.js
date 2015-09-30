@@ -4,8 +4,7 @@ var jayson = require('jayson')
     , settings = require('./config')
     , logger = require('./logger')
     , PORT = process.env.PORT || settings.PORT
-    , logger = require('./logger')
-;
+    , logger = require('./logger');
 
 // Start jobs workers
 jobManager.load();

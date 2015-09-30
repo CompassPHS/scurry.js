@@ -1,9 +1,9 @@
-var fs = require('fs')
-  , path  = require('path')
-  , nconf = require('nconf');
+var fs = require( 'fs' )
+  , path  = require( 'path' )
+  , nconf = require( 'nconf' );
 
 var settingsFile = path.join(__dirname, 'settings.json');
 
-nconf.file(settingsFile).env(['PORT']);
+nconf.file(settingsFile);
 
 module.exports = nconf.load();

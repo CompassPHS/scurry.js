@@ -1,65 +1,64 @@
 var fs = require('fs')
-    , logger = require('./logger')
-    , path = require('path')
-    , settings = require('./config')
-    , jobsFolder = path.join(__dirname, 'jobs')
-    , _ = require('lodash')
-    , registry = {}
-    , logger = require('./logger')
-;
+  , logger = require('./logger')
+  , path = require('path')
+  , settings = require('./config')
+  , jobsFolder = path.join(__dirname, 'jobs')
+  , _ = require('lodash')
+  , registry = {}
+  , logger = require('./logger');
 
 function registerJobs(){
-    logger.info('registering jobs');
+  logger.info('registering jobs');
 
-    var jobs = fs.readdirSync(jobsFolder);
+  var jobs = fs.readdirSync(jobsFolder);
 
-    jobs.forEach(function(key){
+  jobs.forEach(function(key){
 
-        var stats = fs.statSync(path.join(jobsFolder, key));
-        if(!stats.isDirectory()) return;
+    var stats = fs.statSync(path.join(jobsFolder, key));
+    if(!stats.isDirectory()) return;
 
-        var module = require(path.join(jobsFolder,key));
+    var module = require(path.join(jobsFolder,key));
 
-        registry[key] = {
-            name:module.name,
-            job: module,
-            children: [],
-            spawn: function(){
-                logger.info('spawning child: ' + this.name);
-                var child = this.job.spawn();
-                child.started = new Date();
-                this.children.push(child);
+    registry[key] = {
+      name:module.name,
+      job: module,
+      children: [],
+      spawn: function(){
+        logger.info('spawning child: ' + this.name);
+        var child = this.job.spawn();
+        child.started = new Date();
+        this.children.push(child);
 
-                //bind child to handlers
-                process.on('exit', function() {
-                    child.kill();
-                });
-            },
-            methods:module.methods
-        };
+        //bind child to handlers
+        process.on('exit', function() {
+          child.kill();
+        });
+      },
+      methods:module.methods
+    };
 
-    })
+  })
 
-    return registry;
+  return registry;
 }
 
 var load = function(){
-    var eagerSpawn = settings.eagerSpawn;
+  var eagerSpawn = settings.eagerSpawn;
 
-    registerJobs();
+  registerJobs();
 
-    Object.keys(registry)
-        .forEach(function(registrationName){
-            var registration = registry[registrationName];
+  Object.keys(registry)
+    .forEach(function(registrationName){
+      var registration = registry[registrationName];
 
-            logger.info('checking eager spawn for ' + registration.name);
-            if(eagerSpawn === true || eagerSpawn == '*' || eagerSpawn.indexOf('*') > -1 || eagerSpawn.indexOf(registration.name) > -1)
-                registration.spawn();
+      logger.info('checking eager spawn for ' + registration.name);
+      if(eagerSpawn === true || eagerSpawn == '*' || eagerSpawn.indexOf('*') > -1 || eagerSpawn.indexOf(registration.name) > -1)
+        registration.spawn();
 
-        })
+    })
 }
 
 module.exports = {
-    load:load,
-    registry:registry
+  load:load,
+  registry:registry
 }
