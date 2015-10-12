@@ -1,7 +1,0 @@
-{
-  "PORT":8100,
-  "eagerSpawn":true,
-  "logger":{
-    "name":"shuttle-js"
-  }
-}
