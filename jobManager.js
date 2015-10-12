@@ -19,21 +19,25 @@ function registerJobs() {
     var module = require(path.join(jobsFolder,key));
 
     registry[key] = {
-      name:module.name,
+      name: module.name,
       job: module,
       children: [],
       spawn: function(){
         logger.info('spawning child: ' + this.name);
-        var child = this.job.spawn();
-        child.started = new Date();
-        this.children.push(child);
+        var child = this.job.spawn(logger);
 
-        //bind child to handlers
-        process.on('exit', function() {
-          child.kill();
-        });
+        // If child is a forced process...
+        if(child != undefined && child.pid != undefined) {
+          child.started = new Date();
+          this.children.push(child);
+
+          //bind child to handlers
+          process.on('exit', function() {
+            child.kill();
+          });
+        }
       },
-      methods:module.methods
+      methods: module.methods
     };
 
   })

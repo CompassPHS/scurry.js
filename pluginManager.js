@@ -1,9 +1,11 @@
 var registry = {}
   , path = require('path')
   , fs = require('fs')
-  , pluginsFolder = path.join(__dirname, 'plugins');
+  , pluginsFolder = path.join(__dirname, 'plugins')
+  , logger = require('./logger');
 
 var load = function(conf) {
+  logger.info('registering plugins');
   var plugins = fs.readdirSync(pluginsFolder);
 
   plugins.forEach(function(key) {
