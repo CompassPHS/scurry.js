@@ -10,15 +10,6 @@ gulp.task('build', ['copy', 'install']);
 gulp.task('copy', function() {
   gulp.src([path.join(__dirname + '/**/*.js'), '!./**/gulpfile.js', '!./{jobs,jobs/**/*}', '!./{node_modules,node_modules/**/*}'])
     .pipe(gulp.dest(dest))
-
-  if(args.target) {
-    gulp.src('./config/' + args.target + '/settings.json')
-      .pipe(extend('./config/settings.json'))
-      .pipe(gulp.dest('./build/config'));
-  } else {
-    gulp.src('./config/settings.json')
-      .pipe(gulp.dest('./build/config'));
-  }
 })
 
 gulp.task('install', function() {

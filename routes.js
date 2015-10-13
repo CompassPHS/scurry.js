@@ -1,5 +1,5 @@
 var jobManager = require('./jobManager')
-  _ = require('lodash');
+  , _ = require('lodash');
 
 var routes = [];
 
@@ -32,8 +32,6 @@ routes.push({
   }
 })
 
-
-
 Object.keys(jobManager.registry)
   .forEach(function(registrationName){
     var registration = jobManager.registry[registrationName];
@@ -63,19 +61,5 @@ Object.keys(jobManager.registry)
       })
     }
   })
-/*
-routes.push({
-  path:'/{job}',
-  method:'post',
-  handler:function(request,reply){
-    jobManager.registry[request.params.job]
-      .routes
-      .create(request.payload, function(err, result){
-        reply(err)
-      })
-  }
-})
-*/
-
 
 module.exports = routes;
