@@ -7,7 +7,7 @@ var fs = require('fs')
   , logger = require('./logger');
 
 function registerJobs() {
-  logger.info('registering jobs');
+  logger.info('loading jobs');
   
   var jobs = fs.readdirSync(jobsFolder);
 
@@ -23,10 +23,11 @@ function registerJobs() {
       job: module,
       children: [],
       spawn: function(){
-        logger.info('spawning child: ' + this.name);
+        logger.info('loading job: ' + this.name);
         var child = this.job.spawn(logger);
+        logger.info('job loaded: ' + this.name);
 
-        // If child is a forced process...
+        // If child is a forked process...
         if(child != undefined && child.pid != undefined) {
           child.started = new Date();
           this.children.push(child);

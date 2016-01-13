@@ -3,8 +3,7 @@
   "version": "0.2.0",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "prestart": "npm update"
+    "start": "node index.js"
   },
   "author": "Joshua Chan <joshua.bennett.chan@gmail.com>",
   "license": "ISC",
