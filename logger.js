@@ -1,25 +1,18 @@
 var bunyan = require('bunyan')
-  , settings = require('./config')
-  , logOpts = settings.logger;
+  , PrettyStream = require('bunyan-prettystream')
+  , prettyStdOut = new PrettyStream();
+
+prettyStdOut.pipe(process.stdout);
 
 var opts = {
-  name: logOpts.name,
-  streams: []
-};
-
-if(process.env.ENV !== 'test') {
-  opts.streams.push({
-    stream: process.stdout,
-    level: 'debug'
-  });
-
-  if(logOpts.logstashTcp) {
-    opts.streams.push({
-      type: 'raw',
+  name: 'shuttle',
+  streams: [
+    {
       level: 'debug',
-      stream: require('bunyan-logstash-tcp').createStream(logOpts.logstashTcp)
-    })
-  }
-}
+      type: 'raw',
+      stream: prettyStdOut
+    }
+  ]
+};
 
 module.exports = bunyan.createLogger(opts);
