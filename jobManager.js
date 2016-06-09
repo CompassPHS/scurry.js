@@ -6,6 +6,11 @@ var fs = require('fs')
   , registry = {}
   , logger = require('./logger');
 
+// This will safeguard other jobs from failing jobs
+process.on('uncaughtException', function(e) {
+  logger.error(e);
+});
+
 function registerJobs() {
   logger.info('loading jobs');
   
@@ -37,11 +42,6 @@ function registerJobs() {
             child.kill();
           });
         }
-
-        // This will safeguard other jobs from failing jobs
-        process.on('uncaughtException', function(e) {
-          logger.error(e);
-        });
         
       },
       methods: module.methods
