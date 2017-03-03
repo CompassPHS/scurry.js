@@ -1,0 +1,17 @@
+version: '3'
+services: 
+    shuttle: 
+        build: .
+        restart: always
+        ports:
+            - "5000:5000"
+        volumes:
+            - .:/shuttle
+            - "${SHUTTLE_JOBS_DIR}:/shuttle/jobs"
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 5s
+                max_attempts: 3
+                window: 120s
+
