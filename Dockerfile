@@ -1,11 +1,14 @@
 FROM node:alpine
+
 EXPOSE 5000
 
-RUN mkdir -p /code
-WORKDIR /code
+RUN mkdir -p /shuttle
+WORKDIR /shuttle
 
-COPY package.json /code/
+# Install NPM packages
+COPY package.json /shuttle/
 RUN npm install
 
+# Copy code
 COPY . /code
 CMD ["npm", "start"]
