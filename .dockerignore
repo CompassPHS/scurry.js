@@ -1,0 +1,12 @@
+# hidden
+.gitignore
+.idea
+.nvmrc
+
+# dirs
+node_modules
+jobs
+
+# files
+npm-debug.log
+web.config
