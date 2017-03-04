@@ -8,6 +8,7 @@ services:
         volumes:
             - .:/shuttle
             - "${SHUTTLE_JOBS_DIR}:/shuttle/jobs"
+        network_mode: host
         deploy:
             restart_policy:
                 condition: on-failure
