@@ -6,6 +6,11 @@ var fs = require('fs')
   , registry = {}
   , logger = require('./logger');
 
+// This will safeguard other jobs from failing jobs
+process.on('uncaughtException', function(e) {
+  logger.error(e);
+});
+
 function registerJobs() {
   logger.info('loading jobs');
   
@@ -19,13 +24,13 @@ function registerJobs() {
     var module = require(path.join(jobsFolder,key));
 
     registry[key] = {
-      name: module.name,
+      name: key,
       job: module,
       children: [],
       spawn: function(){
-        logger.info('loading job: ' + this.name);
+        logger.info('loading job: ' + key);
         var child = this.job.spawn(logger);
-        logger.info('job loaded: ' + this.name);
+        logger.info('job loaded: ' + key);
 
         // If child is a forked process...
         if(child != undefined && child.pid != undefined) {
@@ -37,6 +42,7 @@ function registerJobs() {
             child.kill();
           });
         }
+        
       },
       methods: module.methods
     };

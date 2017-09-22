@@ -31,5 +31,4 @@ bower_components
 build
 .tmp
 
-web.config
 iisnode

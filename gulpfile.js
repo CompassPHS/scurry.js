@@ -8,7 +8,7 @@ var gulp = require('gulp')
 gulp.task('build', ['copy', 'install']);
 
 gulp.task('copy', function() {
-  gulp.src([path.join(__dirname + '/**/*.js'), '!./**/gulpfile.js', '!./{jobs,jobs/**/*}', '!./{node_modules,node_modules/**/*}'])
+  gulp.src([path.join(__dirname + '/**/*.js'), 'web.config', '!./**/gulpfile.js', '!./{jobs,jobs/**/*}', '!./{plugins,plugins/**/*}', '!./{node_modules,node_modules/**/*}'])
     .pipe(gulp.dest(dest))
 })
 
